@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Analytics Viewer</title>
+<style>
+body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;padding:1rem}
+pre{background:#f4f4f4;padding:1rem;border:1px solid #ddd}
+.controls{margin-bottom:1rem}
+</style>
+</head>
+<body>
+<h1>Client Analytics (localStorage)</h1>
+<div class="controls">
+<button id="refresh">Refresh</button>
+<button id="download">Download JSON</button>
+<button id="clear">Clear (confirm)</button>
+</div>
+<pre id="out">Loading…</pre>
+<script>
+function load(){
+  try{
+  return JSON.parse(localStorage.getItem('ndi-analytics')||'[]');
+  }catch(e){ console.warn('analytics parse failed', e); return []; }
+}
+function render(){
+  const out = document.getElementById('out');
+  out.textContent = JSON.stringify(load(), null, 2);
+}
+document.getElementById('refresh').addEventListener('click', render);
+document.getElementById('download').addEventListener('click', function(){
+  const dataStr = JSON.stringify(load(), null, 2);
+  const blob = new Blob([dataStr], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'ndi-analytics.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('clear').addEventListener('click', function(){ if(confirm('Clear analytics?')){ localStorage.removeItem('ndi-analytics'); render(); alert('Cleared'); } });
+render();
+</script>
+</body>
+</html>

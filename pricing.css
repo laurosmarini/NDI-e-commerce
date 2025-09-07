@@ -1,0 +1,86 @@
+:root {
+    --primary-color: #333;
+    --secondary-color: #fff;
+    --featured-color: #3498db;
+}
+
+/* Basic Styles */
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.pricing-table {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.plan {
+    background-color: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 5px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.plan:hover {
+    transform: scale(1.05);
+}
+
+.plan h2 {
+    color: var(--primary-color);
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+
+li {
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Featured Plan */
+.featured {
+    background-color: var(--featured-color);
+    color: var(--secondary-color);
+}
+
+.featured h2, .featured .price {
+    color: var(--secondary-color);
+}
+
+.featured button {
+    background-color: var(--secondary-color);
+    color: var(--featured-color);
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+    .pricing-table {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

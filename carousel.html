@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Accessible CSS-only Carousel</title>
+  <link rel="stylesheet" href="carousel.css">
+  <style>
+    /* minimal fallback in case carousel.css fails to load */
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.4;padding:1rem}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#carousel">Skip to carousel</a>
+
+  <header>
+    <h1>Responsive CSS-only Carousel</h1>
+    <p>Contact: <a href="mailto:info@nodaysidle.com">info@nodaysidle.com</a></p>
+  </header>
+
+  <main>
+    <section id="carousel" class="carousel-demo" aria-label="Featured images carousel">
+      <h2 class="visually-hidden">Featured images</h2>
+
+      <!-- Radio inputs control which slide is visible (still CSS-driven) -->
+      <div class="carousel" data-slides="5">
+        <input type="radio" name="carousel" id="r1" checked>
+        <input type="radio" name="carousel" id="r2">
+        <input type="radio" name="carousel" id="r3">
+        <input type="radio" name="carousel" id="r4">
+        <input type="radio" name="carousel" id="r5">
+
+  <div class="viewport" aria-roledescription="carousel" aria-label="Image carousel">
+          <ol class="slides">
+            <li class="slide" data-index="1">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/id/1015/800/400" srcset="https://picsum.photos/id/1015/480/240 480w, https://picsum.photos/id/1015/800/400 800w, https://picsum.photos/id/1015/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="Mountain lake at sunrise">
+                <figcaption>Mountain lake at sunrise</figcaption>
+              </figure>
+            </li>
+            <li class="slide" data-index="2">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/id/1025/800/400" srcset="https://picsum.photos/id/1025/480/240 480w, https://picsum.photos/id/1025/800/400 800w, https://picsum.photos/id/1025/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="Majestic eagle in flight">
+                <figcaption>Majestic eagle in flight</figcaption>
+              </figure>
+            </li>
+            <li class="slide" data-index="3">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/id/1035/800/400" srcset="https://picsum.photos/id/1035/480/240 480w, https://picsum.photos/id/1035/800/400 800w, https://picsum.photos/id/1035/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="Desert dunes at golden hour">
+                <figcaption>Desert dunes at golden hour</figcaption>
+              </figure>
+            </li>
+            <li class="slide" data-index="4">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/id/1045/800/400" srcset="https://picsum.photos/id/1045/480/240 480w, https://picsum.photos/id/1045/800/400 800w, https://picsum.photos/id/1045/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="Foggy forest path">
+                <figcaption>Foggy forest path</figcaption>
+              </figure>
+            </li>
+            <li class="slide" data-index="5">
+              <figure>
+                <img loading="lazy" src="https://picsum.photos/id/1055/800/400" srcset="https://picsum.photos/id/1055/480/240 480w, https://picsum.photos/id/1055/800/400 800w, https://picsum.photos/id/1055/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="Coastal cliffs at sunset">
+                <figcaption>Coastal cliffs at sunset</figcaption>
+              </figure>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Prev/Next buttons (keyboard accessible) -->
+        <div class="nav-buttons">
+          <button type="button" class="prev" aria-label="Previous slide">‹</button>
+          <button type="button" class="next" aria-label="Next slide">›</button>
+        </div>
+
+        <!-- Dot thumbnails (labels tied to radios) -->
+        <div class="dots" role="tablist" aria-label="Slide thumbnails">
+          <button type="button" class="dot" data-index="0" aria-pressed="true">1</button>
+          <button type="button" class="dot" data-index="1" aria-pressed="false">2</button>
+          <button type="button" class="dot" data-index="2" aria-pressed="false">3</button>
+          <button type="button" class="dot" data-index="3" aria-pressed="false">4</button>
+          <button type="button" class="dot" data-index="4" aria-pressed="false">5</button>
+        </div>
+
+        <!-- Live announcer for screen reader users -->
+        <div id="carousel-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Built with HTML &amp; CSS only; small JS added for keyboard arrow navigation and announcements. Email: <a href="mailto:info@nodaysidle.com">info@nodaysidle.com</a></p>
+    <div class="admin-controls">
+      <button id="export-analytics">Export Analytics</button>
+      <button id="clear-analytics">Clear Analytics</button>
+    </div>
+  </footer>
+
+  <script>
+    // Lightweight keyboard navigation and aria-live announcer for the carousel
+    (function(){
+      const radios = Array.from(document.querySelectorAll('.carousel input[type=radio]'));
+      const prevBtn = document.querySelector('.carousel .prev');
+      const nextBtn = document.querySelector('.carousel .next');
+  const announcer = document.getElementById('carousel-announcer');
+  const dots = Array.from(document.querySelectorAll('.carousel .dots .dot'));
+
+      function getCurrentIndex(){
+        return radios.findIndex(r => r.checked);
+      }
+
+      function setIndex(n){
+        if(n < 0) n = radios.length - 1;
+        if(n >= radios.length) n = 0;
+        radios[n].checked = true;
+        updateAria(n);
+        announce(n);
+      }
+
+      function updateAria(activeIndex){
+        dots.forEach((d,i)=>{
+          d.setAttribute('aria-pressed', i===activeIndex ? 'true' : 'false');
+        });
+      }
+
+      function announce(index){
+        const slide = document.querySelector('.carousel .slide[data-index="'+(index+1)+'"]');
+        const caption = slide && slide.querySelector('figcaption');
+        if(caption) announcer.textContent = 'Slide ' + (index+1) + ' of ' + radios.length + ': ' + caption.textContent;
+      }
+
+      // prev/next button handlers
+      prevBtn && prevBtn.addEventListener('click', ()=> setIndex(getCurrentIndex()-1));
+      nextBtn && nextBtn.addEventListener('click', ()=> setIndex(getCurrentIndex()+1));
+
+      // keyboard navigation: left/right arrows work when focus is inside the carousel viewport
+      const viewport = document.querySelector('.carousel .viewport');
+      viewport && viewport.addEventListener('keydown', function(e){
+        if(e.key === 'ArrowRight') { e.preventDefault(); setIndex(getCurrentIndex()+1); }
+        if(e.key === 'ArrowLeft') { e.preventDefault(); setIndex(getCurrentIndex()-1); }
+      });
+
+      // update announcer on radio change (in case user clicks dots)
+      radios.forEach((r, i)=> r.addEventListener('change', ()=>{ if(r.checked) { updateAria(i); announce(i); } }));
+
+      // wire dots: clicking a dot sets the corresponding radio
+      dots.forEach((dot)=>{
+        dot.addEventListener('click', function(){
+          const i = Number(this.getAttribute('data-index'));
+          radios[i].checked = true;
+          updateAria(i);
+          announce(i);
+        });
+      });
+
+      // init
+      const start = getCurrentIndex();
+      updateAria(start);
+      announce(start);
+    })();
+  
+    // analytics UI wiring for carousel page
+    (function(){
+      document.addEventListener('DOMContentLoaded', function(){
+        try{
+          const exp = document.getElementById('export-analytics');
+          const clr = document.getElementById('clear-analytics');
+          if(exp) exp.addEventListener('click', ()=> window.ndiAnalytics && window.ndiAnalytics.exportJSON());
+          if(clr) clr.addEventListener('click', ()=> {
+            if(window.ndiAnalytics){
+            if(confirm('Clear analytics from local storage? This cannot be undone.')){
+              window.ndiAnalytics.clear();
+                alert('Analytics cleared.');
+              }
+          }
+          });
+        }catch(e){ console.warn('analytics UI wiring failed', e); }
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* Basic Styles */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "header"
+        "main"
+        "sidebar"
+        "footer";
+    gap: 1rem;
+    padding: 1rem;
+}
+
+header {
+    grid-area: header;
+}
+
+.main-content {
+    grid-area: main;
+}
+
+.sidebar {
+    grid-area: sidebar;
+}
+
+footer {
+    grid-area: footer;
+    text-align: center;
+}
+
+/* Responsive Typography */
+h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Sticky Sidebar */
+.sticky {
+    position: sticky;
+    top: 1rem;
+}
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+    .container {
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas:
+            "header header"
+            "main sidebar"
+            "footer footer";
+    }
+}
+
+/* Print-friendly media queries */
+@media print {
+    body {
+        font-size: 12pt;
+    }
+
+    .container {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    a:after {
+        content: " (" attr(href) ")";
+    }
+}

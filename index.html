@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Product Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">NoDaysIdle Store</a>
+            </div>
+            <div class="hamburger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pricing.html">Products</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="mailto:info@nodaysidle.com">Contact</a></li>
+                <li><a href="carousel.html">Carousel</a></li>
+            </ul>
+            <div class="currency-switcher">
+                <label for="currency">Currency:</label>
+                <select id="currency" aria-label="Select currency">
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                </select>
+                <!-- Theme toggle (keyboard accessible, aria-pressed) -->
+                <button id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle theme" class="theme-toggle" style="margin-left:.5rem;padding:.4rem .6rem;border:2px solid var(--accent);background:transparent;color:var(--accent);font-weight:700">�</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <h2>NoDaysIdle — modern gear for active minds</h2>
+                <p class="lead">Minimal, bold, and built for doing. Browse our latest products and demos.</p>
+                <p class="hero-ctas">
+                    <a class="btn primary" href="pricing.html">See Pricing</a>
+                    <a class="btn" href="carousel.html">View Carousel</a>
+                </p>
+            </div>
+        </section>
+        <section class="product">
+            <div class="product-image">
+                <img loading="lazy" src="https://picsum.photos/id/1060/800/400" srcset="https://picsum.photos/id/1060/480/240 480w, https://picsum.photos/id/1060/800/400 800w, https://picsum.photos/id/1060/1200/600 1200w" sizes="(max-width:640px) 480px, (max-width:1024px) 800px, 1200px" alt="NDI smartwatch">
+            </div>
+            <div class="product-details">
+                <h1 class="product-title">NDI Smartwatch</h1>
+                <p class="product-description">
+                    The NDI Smartwatch is a stylish and functional smartwatch that helps you stay connected and active. 
+                    It features a heart rate monitor, GPS, and a variety of other sensors to track your fitness and activity levels.
+                </p>
+                <p class="product-price" data-price="299.99"></p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+    <p>&copy; 2025 NoDaysIdle Store. All rights reserved.</p>
+        <div class="admin-controls" aria-hidden="false">
+            <button id="export-analytics" class="primary">Export Analytics</button>
+            <button id="clear-analytics">Clear Analytics</button>
+            <button id="view-analytics">View Analytics</button>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        // Small wiring for analytics controls and pageview
+        document.addEventListener('DOMContentLoaded', function(){
+            try{
+                if(window.ndiAnalytics){
+                    // log a simple pageview
+                    window.ndiAnalytics.logEvent('pageview', { path: location.pathname, ts: new Date().toISOString() });
+                }
+                const exp = document.getElementById('export-analytics');
+                const clr = document.getElementById('clear-analytics');
+                if(exp){ exp.addEventListener('click', ()=> window.ndiAnalytics && window.ndiAnalytics.exportJSON()); }
+                if(clr){ clr.addEventListener('click', ()=> { if(window.ndiAnalytics){ if(confirm('Clear analytics from local storage? This cannot be undone.')){ window.ndiAnalytics.clear(); alert('Analytics cleared.'); } } }); }
+                                const view = document.getElementById('view-analytics');
+                                if(view){ view.addEventListener('click', ()=> window.open('/__analytics_viewer.html','_blank')); }
+            }catch(e){ console.warn('analytics wiring failed', e); }
+        });
+    </script>
+    
+</body>
+</html>
